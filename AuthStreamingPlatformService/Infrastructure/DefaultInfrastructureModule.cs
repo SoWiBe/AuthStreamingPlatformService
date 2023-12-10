@@ -1,5 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using AuthStreamingPlatformService.Infrastructure.Abstractions.Repositories;
 using AuthStreamingPlatformService.Infrastructure.Data;
+using AuthStreamingPlatformService.Infrastructure.Repositories;
 using Autofac;
 using Autofac.Configuration;
 using Microsoft.AspNetCore.Diagnostics;
@@ -20,17 +22,22 @@ public class DefaultInfrastructureModule : Module
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-        // builder.RegisterGeneric(typeof(RepositoryBase<>))
-        //     .As(typeof(IRepository<>))
-        //     .As(typeof(IReadRepository<>))
-        //     .InstancePerLifetimeScope();
-        // builder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>();
-        // builder.RegisterType<ApiRepository>().As<IApiRepository>();
-        // builder.RegisterType<JsonRepository>().As<IJsonRepository>();
-        //
-        // builder.RegisterType<DataConvertor>().As<IConvertor>();
-        // builder.RegisterType<LoggerService>().As<ILoggerService>();
-        //
+        builder.RegisterGeneric(typeof(RepositoryBase<>))
+            .As(typeof(IRepository<>))
+            .As(typeof(IReadRepository<>))
+            .InstancePerLifetimeScope();
+
+        builder.Register(c =>
+        {
+            var config = c.Resolve<IConfiguration>();
+            
+            var context = new AppMongoDbContext(config.GetConnectionString("Mongo"));
+            return context;
+        })
+        .AsSelf()
+        .As<IAppMongoDbContext>()
+        .InstancePerLifetimeScope();
+
         var module = new ConfigurationModule(GetConfiguration());
         builder.RegisterModule(module);
     }
