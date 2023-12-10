@@ -1,10 +1,9 @@
 ﻿using System.Linq.Expressions;
+using AuthStreamingPlatformService.Entities.Abstractions;
+using AuthStreamingPlatformService.Infrastructure.Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
-using TechDaily.Entities;
-using TechDaily.Entities.Abstractions;
-using TechDaily.Infrastructure.Abstractions.Repositories;
 
-namespace TechDaily.Infrastructure.Repositories;
+namespace AuthStreamingPlatformService.Infrastructure.Repositories;
 
 public class RepositoryBase<T> : IReadRepository<T>, IRepository<T> where T : class, IEntityBase<Guid>
 {

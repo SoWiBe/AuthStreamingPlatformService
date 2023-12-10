@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace TechDaily.Infrastructure.ActionResults;
+namespace AuthStreamingPlatformService.Infrastructure.ActionResults;
 
 [DefaultStatusCode(DefaultStatusCode)]
 public class ValidationErrorResult : ObjectResult

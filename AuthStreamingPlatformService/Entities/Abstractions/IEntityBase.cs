@@ -1,4 +1,4 @@
-﻿namespace TechDaily.Entities.Abstractions;
+﻿namespace AuthStreamingPlatformService.Entities.Abstractions;
 
 public interface IEntityBase<TId>
 {

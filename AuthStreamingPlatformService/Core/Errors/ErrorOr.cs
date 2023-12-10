@@ -1,6 +1,6 @@
-﻿using TechDaily.Core.Abstractions.Errors;
+﻿using AuthStreamingPlatformService.Core.Abstractions.Errors;
 
-namespace TechDaily.Core.Errors;
+namespace AuthStreamingPlatformService.Core.Errors;
 
 public record struct ErrorOr<TValue> : IErrorOr
 {

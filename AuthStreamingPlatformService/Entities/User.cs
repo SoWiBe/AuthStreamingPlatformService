@@ -1,6 +1,9 @@
-﻿namespace AuthStreamingPlatformService.Entities;
+﻿using AuthStreamingPlatformService.Entities.Abstractions;
 
-public class User
+namespace AuthStreamingPlatformService.Entities;
+
+public class User : IEntityBase<Guid>
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
     
 }

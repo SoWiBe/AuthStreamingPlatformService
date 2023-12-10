@@ -7,8 +7,31 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Autofac" Version="7.1.0" />
+        <PackageReference Include="Autofac.Configuration" Version="6.0.0" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Core\Abstractions\Repositories" />
+      <Folder Include="Core\Abstractions\Services" />
+      <Folder Include="Core\Repositories" />
+      <Folder Include="Core\Services" />
+      <Folder Include="Entities\Requests" />
+      <Folder Include="Entities\Responses" />
+      <Folder Include="Infrastructure\Errors" />
     </ItemGroup>
 
 </Project>

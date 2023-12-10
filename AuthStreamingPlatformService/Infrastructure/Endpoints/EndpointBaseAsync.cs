@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthStreamingPlatformService.Infrastructure.Endpoints;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TechDaily.Infrastructure.Endpoints;
 

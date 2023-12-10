@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using TechDaily.Core.Errors;
+using AuthStreamingPlatformService.Core.Errors;
 
-namespace TechDaily.Core.Abstractions.Errors;
+namespace AuthStreamingPlatformService.Core.Abstractions.Errors;
 
 public readonly record struct Error
 {

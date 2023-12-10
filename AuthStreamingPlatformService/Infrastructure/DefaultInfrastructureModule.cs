@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using AuthStreamingPlatformService.Infrastructure.Data;
 using Autofac;
 using Autofac.Configuration;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using TechDaily.Infrastructure.Data;
 
-namespace TechDaily.Infrastructure;
+namespace AuthStreamingPlatformService.Infrastructure;
 
 public class DefaultInfrastructureModule : Module
 {
@@ -19,21 +19,6 @@ public class DefaultInfrastructureModule : Module
         builder.RegisterType<ExceptionHandlerMiddleware>().AsSelf().InstancePerLifetimeScope();
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-        builder.Register(c =>
-            {
-                var config = c.Resolve<IConfiguration>();
-
-                var opt = new DbContextOptionsBuilder<AppDbContext>()
-                    .UseSqlite(config.GetConnectionString("Default"));
-
-                var context = new AppDbContext(opt.Options);
-                context.Database.EnsureCreated();
-
-                return context;
-            }).AsSelf()
-            .As<DbContext>()
-            .InstancePerLifetimeScope();
 
         // builder.RegisterGeneric(typeof(RepositoryBase<>))
         //     .As(typeof(IRepository<>))

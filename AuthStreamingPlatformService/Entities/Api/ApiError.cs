@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Newtonsoft.Json.Linq;
 
-namespace TechDaily.Entities.Api;
+namespace AuthStreamingPlatformService.Entities.Api;
 
 public record ApiError
 {

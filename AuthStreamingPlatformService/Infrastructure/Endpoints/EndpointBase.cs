@@ -1,10 +1,10 @@
 ﻿using System.Net;
+using AuthStreamingPlatformService.Entities.Api;
+using AuthStreamingPlatformService.Infrastructure.ActionResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TechDaily.Entities.Api;
-using TechDaily.Infrastructure.ActionResults;
 
-namespace TechDaily.Infrastructure.Endpoints;
+namespace AuthStreamingPlatformService.Infrastructure.Endpoints;
 
 [Authorize]
 [ApiController]

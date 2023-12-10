@@ -1,4 +1,4 @@
-﻿namespace TechDaily.Core.Errors;
+﻿namespace AuthStreamingPlatformService.Core.Errors;
 
 public enum ErrorType
 {

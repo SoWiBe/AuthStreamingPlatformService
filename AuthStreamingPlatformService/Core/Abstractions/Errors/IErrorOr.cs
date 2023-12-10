@@ -1,4 +1,4 @@
-﻿namespace TechDaily.Core.Abstractions.Errors;
+﻿namespace AuthStreamingPlatformService.Core.Abstractions.Errors;
 
 public interface IErrorOr
 {
