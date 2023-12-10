@@ -4,6 +4,12 @@ AuthStreamingPlatformService/obj
 /AuthStreamingPlatformService/bin
 /AuthStreamingPlatformService/obj
 
+bin
+obj
+
+bin/
+obj/
+
 # User-specific files
 *.suo
 *.user
