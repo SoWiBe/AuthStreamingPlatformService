@@ -2,6 +2,7 @@
 using AuthStreamingPlatformService.Core.Abstractions.Services;
 using AuthStreamingPlatformService.Core.Errors;
 using AuthStreamingPlatformService.Entities;
+using AuthStreamingPlatformService.Entities.Requests;
 using AuthStreamingPlatformService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
@@ -55,14 +56,33 @@ public class UsersService : IUsersService
         return user;
     }
 
-    public async Task<ErrorOr<User>> PatchUser(User user)
+    public async Task<ErrorOr<User>> PatchUser(string email, PatchUserRequest request)
     {
-        throw new NotImplementedException();
-    }
+        var filter = Builders<User>.Filter.Eq("email", email);
 
-    public Task<ErrorOr<User>> PutUser(User user)
-    {
-        throw new NotImplementedException();
+        UpdateDefinition<User>? update;
+        
+        if (request.FirstName is not null)
+        {
+            update = Builders<User>.Update.Set("first_name", request.FirstName);
+            await UpdateField(filter, update);
+        } 
+        else if (request.LastName is not null)
+        {
+            update = Builders<User>.Update.Set("last_name", request.FirstName);
+            await UpdateField(filter, update);
+        }
+        else if (request.Nick is not null)
+        {
+            update = Builders<User>.Update.Set("nick", request.FirstName);
+            await UpdateField(filter, update);
+        }
+
+        var user = await GetUserByEmail(email);
+        if (user.IsError)
+            return user.Errors.FirstOrDefault();
+
+        return user.Value;
     }
 
     public async Task<IErrorOr> DeleteUser(string email)
@@ -72,5 +92,10 @@ public class UsersService : IUsersService
         await _users.DeleteOneAsync(filter);
 
         return ErrorOr.NoError();
+    }
+
+    private async Task UpdateField(FilterDefinition<User> filter, UpdateDefinition<User> update)
+    {
+        await _users.UpdateOneAsync(filter, update);
     }
 }
