@@ -17,8 +17,8 @@ public class User : IEntityBase<Guid>
     
     [Required]
     [BsonElement("first_name")]
-    
     public string FirstName { get; set; }
+    
     [Required]
     [BsonElement("last_name")]
     public string LastName { get; set; }

@@ -1,4 +1,5 @@
 ﻿using AuthStreamingPlatformService.Core.Abstractions.Services;
+using AuthStreamingPlatformService.Entities;
 using AuthStreamingPlatformService.Entities.Requests;
 using AuthStreamingPlatformService.Entities.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -19,9 +20,21 @@ public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.W
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "User")]
     [HttpPost("/user")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public override async Task<ActionResult<RegisterUserResponse>> HandleAsync(RegisterUserRequest request, 
         CancellationToken cancellationToken = default)
     {
-        return Ok();
+        var user = new User
+        {
+            Nick = request.Nick,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email,
+            Password = request.Password,
+            Logo = request.Logo
+        };
+        
+        return Ok(new RegisterUserResponse { Detail = "Success!"} );
     }
 }
