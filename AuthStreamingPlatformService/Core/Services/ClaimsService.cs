@@ -18,7 +18,8 @@ public class ClaimsService : IClaimsService
     {
         List<Claim> userClaims = new()
         {
-            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Name, user.Nick),
+            new Claim("sub", user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email)
         };
 
