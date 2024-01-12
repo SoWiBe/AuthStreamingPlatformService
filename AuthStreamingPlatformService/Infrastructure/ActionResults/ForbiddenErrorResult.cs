@@ -1,21 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AuthStreamingPlatformService.Infrastructure.ActionResults;
 
-[DefaultStatusCode(DefaultStatusCode)]
-public class ValidationErrorResult : ObjectResult
-{
-    private const int DefaultStatusCode = StatusCodes.Status422UnprocessableEntity;
 
-    public ValidationErrorResult(object? error)
+[DefaultStatusCode(DefaultStatusCode)]
+public class ForbiddenErrorResult : ObjectResult
+{
+    private const int DefaultStatusCode = StatusCodes.Status403Forbidden;
+
+    public ForbiddenErrorResult(object? error)
         : base(error)
     {
         StatusCode = DefaultStatusCode;
     }
 
-    public ValidationErrorResult(ModelStateDictionary modelState)
+    public ForbiddenErrorResult(ModelStateDictionary modelState)
         : base(new SerializableError(modelState))
     {
         if (modelState == null) throw new ArgumentNullException(nameof(modelState));

@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AuthStreamingPlatformService.Entities.Abstractions;
+using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace AuthStreamingPlatformService.Entities;
 
-public class User : IEntityBase<Guid>
+public class User : IdentityUser<Guid>
 {
     [BsonId]
     [BsonGuidRepresentation(GuidRepresentation.Standard)]

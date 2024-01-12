@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using AuthStreamingPlatformService.Core.Errors;
+using AuthStreamingPlatformService.Entities.Enums;
+
 
 namespace AuthStreamingPlatformService.Core.Abstractions.Errors;
 

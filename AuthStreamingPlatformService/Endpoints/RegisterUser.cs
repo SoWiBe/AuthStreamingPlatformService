@@ -34,6 +34,10 @@ public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.W
             Password = request.Password,
             Logo = request.Logo
         };
+
+        var result = await _usersService.PostUser(user);
+        if (result.IsError)
+            return GetActionResult(result);
         
         return Ok(new RegisterUserResponse { Detail = "Success!"} );
     }

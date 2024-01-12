@@ -5,17 +5,17 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace AuthStreamingPlatformService.Infrastructure.ActionResults;
 
 [DefaultStatusCode(DefaultStatusCode)]
-public class ValidationErrorResult : ObjectResult
+public class FailureErrorResult : ObjectResult
 {
-    private const int DefaultStatusCode = StatusCodes.Status422UnprocessableEntity;
+    private const int DefaultStatusCode = 420;
 
-    public ValidationErrorResult(object? error)
+    public FailureErrorResult(object? error)
         : base(error)
     {
         StatusCode = DefaultStatusCode;
     }
 
-    public ValidationErrorResult(ModelStateDictionary modelState)
+    public FailureErrorResult(ModelStateDictionary modelState)
         : base(new SerializableError(modelState))
     {
         if (modelState == null) throw new ArgumentNullException(nameof(modelState));

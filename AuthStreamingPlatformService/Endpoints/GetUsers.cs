@@ -24,6 +24,8 @@ public class GetUsers : EndpointBaseAsync.WithoutRequest.WithActionResult<GetUse
     public override async Task<ActionResult<GetUsersResponse>> HandleAsync(CancellationToken cancellationToken = default)
     {
         var result = await _usersService.GetAllUsers();
+        if (result.IsError)
+            return GetActionResult(result);
 
         return Ok(new GetUsersResponse { Users = result.Value });
     }
