@@ -36,6 +36,17 @@ public class UsersService : IUsersService
         return user;
     }
 
+    public async Task<ErrorOr<User>> GetUserByEmail(string email)
+    {
+        var filter = Builders<User>.Filter.Eq("email", email);
+        
+        var user = await _users.Find(filter).FirstOrDefaultAsync();
+        if (user is null)
+            return Error.NotFound("Users.Error", "User not found");
+
+        return user;
+    }
+
     public async Task<ErrorOr<User>> PostUser(User user)
     {
         await _users.InsertOneAsync(user);

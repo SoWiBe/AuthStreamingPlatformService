@@ -1,5 +1,6 @@
 ﻿using AuthStreamingPlatformService.Core.Abstractions.Services;
 using AuthStreamingPlatformService.Entities;
+using AuthStreamingPlatformService.Entities.Constants;
 using AuthStreamingPlatformService.Entities.Requests;
 using AuthStreamingPlatformService.Entities.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -16,13 +17,13 @@ public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.W
     {
         _usersService = usersService;
     }
-    
+
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "User")]
     [HttpPost("/user")]
+    [ApiExplorerSettings(GroupName = "User")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public override async Task<ActionResult<RegisterUserResponse>> HandleAsync(RegisterUserRequest request, 
+    public override async Task<ActionResult<RegisterUserResponse>> HandleAsync(RegisterUserRequest request,
         CancellationToken cancellationToken = default)
     {
         var user = new User
@@ -38,7 +39,19 @@ public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.W
         var result = await _usersService.PostUser(user);
         if (result.IsError)
             return GetActionResult(result);
-        
-        return Ok(new RegisterUserResponse { Detail = "Success!"} );
+
+        await SeedRoles();
+
+        return Created(new RegisterUserResponse { Detail = "Success!" });
     }
+
+    private async Task SeedRoles()
+    {
+        // if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+        //     await _roleManager.CreateAsync(new Role(UserRoles.User));
+        //
+        // if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+        //     await _roleManager.CreateAsync(new Role(UserRoles.User));
+    }
+
 }

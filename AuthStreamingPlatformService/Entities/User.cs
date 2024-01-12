@@ -10,7 +10,7 @@ public class User : IdentityUser<Guid>
 {
     [BsonId]
     [BsonGuidRepresentation(GuidRepresentation.Standard)]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     
     [Required]
     [BsonElement("nick")]

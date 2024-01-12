@@ -19,8 +19,8 @@ public class GetUsers : EndpointBaseAsync.WithoutRequest.WithActionResult<GetUse
     }
     
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "User")]
     [HttpGet("/users")]
+    [ApiExplorerSettings(GroupName = "User")]
     public override async Task<ActionResult<GetUsersResponse>> HandleAsync(CancellationToken cancellationToken = default)
     {
         var result = await _usersService.GetAllUsers();

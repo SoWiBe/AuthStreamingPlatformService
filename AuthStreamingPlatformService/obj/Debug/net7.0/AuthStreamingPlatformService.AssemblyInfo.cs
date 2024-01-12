@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuthStreamingPlatformService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3037881b769d3b8724e5abc5c33282ba606ddd47")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a10bdaa43f6d3c0a26cdda0d7077409df3da9b4a")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuthStreamingPlatformService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuthStreamingPlatformService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
