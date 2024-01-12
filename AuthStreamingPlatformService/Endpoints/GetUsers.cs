@@ -1,4 +1,5 @@
-﻿using AuthStreamingPlatformService.Entities;
+﻿using AuthStreamingPlatformService.Core.Abstractions.Services;
+using AuthStreamingPlatformService.Entities;
 using AuthStreamingPlatformService.Entities.Responses;
 using AuthStreamingPlatformService.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -10,33 +11,20 @@ namespace AuthStreamingPlatformService.Endpoints;
 
 public class GetUsers : EndpointBaseAsync.WithoutRequest.WithActionResult<GetUsersResponse>
 {
-    private readonly IAppMongoDbContext _context;
+    private readonly IUsersService _usersService;
 
-    public GetUsers(IAppMongoDbContext context)
+    public GetUsers(IUsersService usersService)
     {
-        _context = context;
+        _usersService = usersService;
     }
     
     [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "User")]
     [HttpGet("/users")]
     public override async Task<ActionResult<GetUsersResponse>> HandleAsync(CancellationToken cancellationToken = default)
     {
-        var result = _context.GetDatabase();
+        var result = await _usersService.GetAllUsers();
 
-        var users = result.GetCollection<User>("Users");
-        var user = new User
-        {
-            Nick = "test", 
-            Email = "test", Logo = 1,
-            FirstName = "tt", 
-            LastName = "tt", 
-            Password = "123"
-        };
-        
-        await users.InsertOneAsync(user);
-
-        var documents = await users.Find(_ => true).ToListAsync(cancellationToken);
-
-        return Ok(new GetUsersResponse { Users = documents });
+        return Ok(new GetUsersResponse { Users = result.Value });
     }
 }

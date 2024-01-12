@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dosdyc8QhrhJ/+A8oPYjQT8jWpLd1YtdCvnyE6CyxhY44R6hseGqIJ4MJMMSNK0LjVMP2KvJpube/mukjKyTPQ==",
+  "dgSpecHash": "X+iiPyETzGvucJg2JHBxtVy++0eHzy8cujKNV62xkVNi6ZXGnCvUp2RH6fxpdH15MHJ040sbEzuMmWgSp6PLIw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Aleksey Gryzlov\\RiderProjects\\AuthStreamingPlatformService\\AuthStreamingPlatformService\\AuthStreamingPlatformService.csproj",
   "expectedPackageFiles": [
@@ -57,7 +57,32 @@
     "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
     "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
     "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
-    "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\zstdsharp.port\\0.6.2\\zstdsharp.port.0.6.2.nupkg.sha512"
+    "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\zstdsharp.port\\0.6.2\\zstdsharp.port.0.6.2.nupkg.sha512",
+    "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.15\\microsoft.netcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.15\\microsoft.windowsdesktop.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.15\\microsoft.aspnetcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\Aleksey Gryzlov\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.15\\microsoft.netcore.app.host.win-x64.7.0.15.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8g9c-28fc-mcx2",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }
