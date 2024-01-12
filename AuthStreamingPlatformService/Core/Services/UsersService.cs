@@ -3,6 +3,7 @@ using AuthStreamingPlatformService.Core.Abstractions.Services;
 using AuthStreamingPlatformService.Core.Errors;
 using AuthStreamingPlatformService.Entities;
 using AuthStreamingPlatformService.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -64,8 +65,12 @@ public class UsersService : IUsersService
         throw new NotImplementedException();
     }
 
-    public Task<ErrorOr<User>> DeleteUser(User user)
+    public async Task<IErrorOr> DeleteUser(string email)
     {
-        throw new NotImplementedException();
+        var filter = Builders<User>.Filter.Eq("email", email);
+        
+        await _users.DeleteOneAsync(filter);
+
+        return ErrorOr.NoError();
     }
 }

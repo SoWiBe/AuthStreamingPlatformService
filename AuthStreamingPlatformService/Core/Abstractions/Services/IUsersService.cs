@@ -1,4 +1,5 @@
-﻿using AuthStreamingPlatformService.Core.Errors;
+﻿using AuthStreamingPlatformService.Core.Abstractions.Errors;
+using AuthStreamingPlatformService.Core.Errors;
 using AuthStreamingPlatformService.Entities;
 
 namespace AuthStreamingPlatformService.Core.Abstractions.Services;
@@ -11,5 +12,5 @@ public interface IUsersService
     Task<ErrorOr<User>> PostUser(User user);
     Task<ErrorOr<User>> PatchUser(User user);
     Task<ErrorOr<User>> PutUser(User user);
-    Task<ErrorOr<User>> DeleteUser(User user);
+    Task<IErrorOr> DeleteUser(string email);
 }
