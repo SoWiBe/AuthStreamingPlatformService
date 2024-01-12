@@ -12,4 +12,7 @@ public class PatchUserRequest
     
     [JsonPropertyName("last_name")]
     public string? LastName { get; set; }
+    
+    [JsonPropertyName("logo")]
+    public int? Logo { get; set; }
 }

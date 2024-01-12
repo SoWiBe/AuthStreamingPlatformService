@@ -67,14 +67,19 @@ public class UsersService : IUsersService
             update = Builders<User>.Update.Set("first_name", request.FirstName);
             await UpdateField(filter, update);
         } 
-        else if (request.LastName is not null)
+        if (request.LastName is not null)
         {
             update = Builders<User>.Update.Set("last_name", request.FirstName);
             await UpdateField(filter, update);
         }
-        else if (request.Nick is not null)
+        if (request.Nick is not null)
         {
-            update = Builders<User>.Update.Set("nick", request.FirstName);
+            update = Builders<User>.Update.Set("nick", request.Nick);
+            await UpdateField(filter, update);
+        }
+        if (request.Logo is not null)
+        {
+            update = Builders<User>.Update.Set("logo", request.Logo);
             await UpdateField(filter, update);
         }
 
