@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace AuthStreamingPlatformService.Entities;
 
-public class User : IdentityUser<Guid>
+public class User : IEntityBase<Guid>
 {
     [BsonId]
     [BsonGuidRepresentation(GuidRepresentation.Standard)]

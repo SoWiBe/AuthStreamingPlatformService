@@ -4,5 +4,9 @@ namespace AuthStreamingPlatformService.Entities.Responses;
 
 public class LoginUserResponse
 {
-    public TokenResult Token { get; set; } 
+    [JsonPropertyName("access")]
+    public string Token { get; set; }
+    
+    [JsonPropertyName("expiration")]
+    public DateTime Expiration { get; set; }
 }

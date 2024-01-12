@@ -4,6 +4,7 @@ using AuthStreamingPlatformService.Core.Abstractions.Services;
 using AuthStreamingPlatformService.Entities;
 using AuthStreamingPlatformService.Entities.Requests;
 using AuthStreamingPlatformService.Entities.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDaily.Infrastructure.Endpoints;
 
@@ -22,8 +23,9 @@ public class LoginUser : EndpointBaseAsync.WithRequest<LoginUserRequest>.WithAct
         _jwtTokenService = jwtTokenService;
     }
     
-    [HttpPost("/login")]
-    [ApiExplorerSettings(GroupName = "User")]
+    [AllowAnonymous]
+    [HttpPost("/auth/sign-in")]
+    [ApiExplorerSettings(GroupName = "Auth")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public override async Task<ActionResult<LoginUserResponse>> HandleAsync(LoginUserRequest request,
@@ -41,11 +43,8 @@ public class LoginUser : EndpointBaseAsync.WithRequest<LoginUserRequest>.WithAct
 
         return Ok(new LoginUserResponse
             { 
-                Token = new TokenResult
-                {
-                    Token = new JwtSecurityTokenHandler().WriteToken(token.Value), 
-                    Expiration = token.Value.ValidTo
-                }
+                Token = new JwtSecurityTokenHandler().WriteToken(token.Value), 
+                Expiration = token.Value.ValidTo
             }); 
     }
 }

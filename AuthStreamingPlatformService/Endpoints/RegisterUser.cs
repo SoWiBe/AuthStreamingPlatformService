@@ -19,8 +19,8 @@ public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.W
     }
 
     [AllowAnonymous]
-    [HttpPost("/user")]
-    [ApiExplorerSettings(GroupName = "User")]
+    [HttpPost("/auth/sign-up")]
+    [ApiExplorerSettings(GroupName = "Auth")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public override async Task<ActionResult<RegisterUserResponse>> HandleAsync(RegisterUserRequest request,
