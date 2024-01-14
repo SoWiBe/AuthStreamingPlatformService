@@ -91,6 +91,7 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+app.UseCors(builder => builder.AllowAnyOrigin());
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint(swaggerUrl, swaggerName));
 app.UseReDoc(options =>
