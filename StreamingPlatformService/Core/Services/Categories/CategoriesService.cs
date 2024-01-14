@@ -33,8 +33,8 @@ public class CategoriesService : ICategoriesService
     /// <returns></returns>
     public async Task<ErrorOr<IEnumerable<Category>>> GetAllCategories()
     {
-        var users = await _categories.Find(_ => true).ToListAsync();
-        return users ?? new List<Category>();
+        var categories = await _categories.Find(_ => true).ToListAsync();
+        return categories ?? new List<Category>();
     }
 
     /// <summary>
