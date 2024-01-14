@@ -91,10 +91,9 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-app.UseCors(builder => builder.AllowAnyOrigin()
+app.UseCors(builder => builder.WithOrigins("http://localhost:5173", "https://streaming-platform-web-wheat.vercel.app")
                                 .AllowAnyHeader()
-                                .AllowAnyMethod()
-                                .AllowCredentials());
+                                .AllowAnyMethod());
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint(swaggerUrl, swaggerName));
 app.UseReDoc(options =>
