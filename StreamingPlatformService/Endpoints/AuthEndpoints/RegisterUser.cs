@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StreamingPlatformService.Core.Abstractions.Services;
 using StreamingPlatformService.Core.Abstractions.Services.Users;
@@ -12,10 +13,14 @@ namespace StreamingPlatformService.Endpoints.AuthEndpoints;
 public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.WithActionResult<RegisterUserResponse>
 {
     private readonly IUsersService _usersService;
+    private readonly IClaimsService _claimsService;
+    private readonly IJwtTokenService _jwtTokenService;
 
-    public RegisterUser(IUsersService usersService)
+    public RegisterUser(IUsersService usersService, IClaimsService claimsService, IJwtTokenService jwtTokenService)
     {
         _usersService = usersService;
+        _claimsService = claimsService;
+        _jwtTokenService = jwtTokenService;
     }
 
     [AllowAnonymous]
@@ -42,7 +47,17 @@ public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.W
 
         await SeedRoles();
 
-        return Created(new RegisterUserResponse { Detail = "Success!" });
+        var userClaims = await _claimsService.GetUserClaimsAsync(result.Value);
+        if (userClaims.IsError)
+            return GetActionResult(userClaims);
+
+        var token = await _jwtTokenService.GetJwtToken(userClaims.Value.ToList());
+        
+        return Created(new RegisterUserResponse
+        {
+            Token = new JwtSecurityTokenHandler().WriteToken(token.Value), 
+            Expiration = token.Value.ValidTo
+        });
     }
 
     private async Task SeedRoles()

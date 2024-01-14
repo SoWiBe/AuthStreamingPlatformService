@@ -1,6 +1,12 @@
-﻿namespace StreamingPlatformService.Entities.Responses;
+﻿using System.Text.Json.Serialization;
+
+namespace StreamingPlatformService.Entities.Responses;
 
 public class RegisterUserResponse
 {
-    public string Detail { get; set; }
+    [JsonPropertyName("access")]
+    public string Token { get; set; }
+    
+    [JsonPropertyName("expiration")]
+    public DateTime Expiration { get; set; }
 }
