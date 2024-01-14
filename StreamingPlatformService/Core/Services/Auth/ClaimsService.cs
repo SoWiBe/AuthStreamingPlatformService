@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using StreamingPlatformService.Core.Abstractions.Services;
+using StreamingPlatformService.Core.Abstractions.Services.Users;
 using StreamingPlatformService.Core.Errors;
 using StreamingPlatformService.Entities;
 

@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using StreamingPlatformService.Core.Abstractions.Errors;
 using StreamingPlatformService.Core.Abstractions.Services;
+using StreamingPlatformService.Core.Abstractions.Services.Users;
 using StreamingPlatformService.Core.Errors;
 using StreamingPlatformService.Entities;
 using StreamingPlatformService.Entities.Requests;

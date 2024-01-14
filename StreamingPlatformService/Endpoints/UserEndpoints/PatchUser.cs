@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StreamingPlatformService.Core.Abstractions.Errors;
 using StreamingPlatformService.Core.Abstractions.Services;
+using StreamingPlatformService.Core.Abstractions.Services.Users;
 using StreamingPlatformService.Entities.Requests;
 using StreamingPlatformService.Entities.Responses;
 using StreamingPlatformService.Infrastructure.Endpoints;

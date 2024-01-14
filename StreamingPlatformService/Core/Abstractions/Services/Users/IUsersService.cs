@@ -3,7 +3,7 @@ using StreamingPlatformService.Core.Errors;
 using StreamingPlatformService.Entities;
 using StreamingPlatformService.Entities.Requests;
 
-namespace StreamingPlatformService.Core.Abstractions.Services;
+namespace StreamingPlatformService.Core.Abstractions.Services.Users;
 
 public interface IUsersService
 {
