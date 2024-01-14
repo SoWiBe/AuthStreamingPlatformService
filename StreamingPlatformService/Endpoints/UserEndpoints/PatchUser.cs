@@ -6,7 +6,7 @@ using StreamingPlatformService.Entities.Requests;
 using StreamingPlatformService.Entities.Responses;
 using StreamingPlatformService.Infrastructure.Endpoints;
 
-namespace StreamingPlatformService.Endpoints;
+namespace StreamingPlatformService.Endpoints.UserEndpoints;
 
 public class PatchUser : EndpointBaseAsync.WithRequest<PatchUserRequest>.WithActionResult<PatchUserResponse>
 {

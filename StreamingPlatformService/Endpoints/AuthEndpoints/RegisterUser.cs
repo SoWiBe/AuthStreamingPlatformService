@@ -6,7 +6,7 @@ using StreamingPlatformService.Entities.Requests;
 using StreamingPlatformService.Entities.Responses;
 using StreamingPlatformService.Infrastructure.Endpoints;
 
-namespace StreamingPlatformService.Endpoints;
+namespace StreamingPlatformService.Endpoints.AuthEndpoints;
 
 public class RegisterUser : EndpointBaseAsync.WithRequest<RegisterUserRequest>.WithActionResult<RegisterUserResponse>
 {

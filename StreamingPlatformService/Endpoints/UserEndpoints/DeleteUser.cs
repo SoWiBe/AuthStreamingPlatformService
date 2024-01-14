@@ -5,7 +5,7 @@ using StreamingPlatformService.Core.Abstractions.Services;
 using StreamingPlatformService.Entities.Responses;
 using StreamingPlatformService.Infrastructure.Endpoints;
 
-namespace StreamingPlatformService.Endpoints;
+namespace StreamingPlatformService.Endpoints.UserEndpoints;
 
 public class DeleteUser : EndpointBaseAsync.WithoutRequest.WithActionResult<DeleteUserResponse>
 {
