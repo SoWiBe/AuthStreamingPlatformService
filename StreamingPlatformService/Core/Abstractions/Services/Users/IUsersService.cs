@@ -13,5 +13,5 @@ public interface IUsersService
     Task<ErrorOr<User>> PostUser(User user);
     Task<ErrorOr<User>> PatchUser(string email, PatchUserRequest request);
     Task<IErrorOr> UpdatePassword(PatchPasswordRequest request);
-    Task<IErrorOr> DeleteUser(string email);
+    Task<IErrorOr> DeleteUser(Guid id);
 }

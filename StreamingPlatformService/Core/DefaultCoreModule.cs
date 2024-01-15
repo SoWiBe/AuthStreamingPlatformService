@@ -6,6 +6,7 @@ using StreamingPlatformService.Core.Abstractions.Services.Users;
 using StreamingPlatformService.Core.Services;
 using StreamingPlatformService.Core.Services.Categories;
 using StreamingPlatformService.Core.Services.Channels;
+using StreamingPlatformService.Core.Services.Users;
 
 namespace StreamingPlatformService.Core;
 

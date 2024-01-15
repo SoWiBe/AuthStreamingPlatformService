@@ -7,9 +7,9 @@ using StreamingPlatformService.Infrastructure.Endpoints;
 namespace StreamingPlatformService.Endpoints.ChannelsEndpoints;
 
 /// <summary>
-/// Get channels endpoint
+/// Delete Channel endpoint
 /// </summary>
-public class GetChannels : EndpointBaseAsync.WithRequest<GetChannelsRequest>.WithActionResult<GetChannelsResponse>
+public class DeleteChannel : EndpointBaseAsync.WithRequest<DeleteChannelRequest>.WithActionResult<DeleteChannelResponse>
 {
     private readonly IChannelsService _channelsService;
 
@@ -17,23 +17,18 @@ public class GetChannels : EndpointBaseAsync.WithRequest<GetChannelsRequest>.Wit
     /// Ctor for endpoint
     /// </summary>
     /// <param name="channelsService"></param>
-    public GetChannels(IChannelsService channelsService)
+    public DeleteChannel(IChannelsService channelsService)
     {
         _channelsService = channelsService;
     }
     
-    [HttpGet("/channel/channels")] 
+    [HttpDelete(DeleteChannelRequest.Route)]
     [ApiExplorerSettings(GroupName = "Channel")]
-    public override async Task<ActionResult<GetChannelsResponse>> HandleAsync([FromQuery] GetChannelsRequest request, 
+    public override async Task<ActionResult<DeleteChannelResponse>> HandleAsync([FromRoute] DeleteChannelRequest request, 
         CancellationToken cancellationToken = default)
     {
-        var channels = await _channelsService.GetChannels(request.CategoryId);
+        var result = await _channelsService.DeleteChannel(request.Id);
         
-        return channels.IsError ? 
-            GetActionResult(channels) :
-            Ok(new GetChannelsResponse
-            {
-                Channels = channels.Value
-            });
+        return result.IsError ? GetActionResult(result) : Ok(new DeleteChannelResponse { Detail = "Success!" });
     }
 }

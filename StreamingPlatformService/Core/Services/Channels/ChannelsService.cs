@@ -13,9 +13,11 @@ namespace StreamingPlatformService.Core.Services.Channels;
 public class ChannelsService : IChannelsService
 {
     private readonly IAppMongoDbContext _mongoDbContext;
+    private readonly IMongoCollection<Channel> _channels;
+    
     private readonly IUsersService _usersService;
     private readonly ICategoriesService _categoriesService;
-    private readonly IMongoCollection<Channel> _channels;
+    
     
     public ChannelsService(IAppMongoDbContext mongoDbContext, IUsersService usersService, ICategoriesService categoriesService)
     {
@@ -25,20 +27,97 @@ public class ChannelsService : IChannelsService
         _channels = _mongoDbContext.GetDatabase().GetCollection<Channel>("Channels");
     }
     
-    public async Task<ErrorOr<IEnumerable<Channel>>> GetChannels()
+    /// <summary>
+    /// Get All Channels
+    /// </summary>
+    /// <returns></returns>
+    public async Task<ErrorOr<IEnumerable<Channel>>> GetChannels(Guid? categoryId = null)
     {
-        var channels = await _channels.Find(_ => true).ToListAsync();
+        if (categoryId is null)
+            return await _channels.Find(_ => true).ToListAsync();
+
+        var category = await _categoriesService.GetCategory((Guid)categoryId);
+        if (category.IsError)
+            return category.FirstError;
+        
+        var filter = Builders<Channel>.Filter.Eq("category", category.Value);
+        var channels = await _channels.Find(filter).ToListAsync();
+
         return channels ?? new List<Channel>();
     }
 
+    /// <summary>
+    /// Get Channel by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<ErrorOr<Channel>> GetChannel(Guid id)
     {
-        throw new NotImplementedException();
+        var filter = Builders<Channel>.Filter.Eq("_id", id);
+
+        var channel = await _channels.Find(filter).FirstOrDefaultAsync();
+        if (channel is null)
+            return Error.NotFound("Channel.Error", "Channel not found");
+
+        return channel;
     }
 
+    
+    /// <summary>
+    /// Get Channel by category
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task<ErrorOr<Channel>> GetChannelByCategory(Guid categoryId)
+    {
+        var category = await _categoriesService.GetCategory(categoryId);
+        if (category.IsError)
+            return category.FirstError;
+        
+        var filter = Builders<Channel>.Filter.Eq("category", category);
+        
+        var channel = await _channels.Find(filter).FirstOrDefaultAsync();
+        if (channel is null)
+            return Error.NotFound("Channel.Error", "Channel not found");
+
+        return channel;
+    }
+
+    /// <summary>
+    /// Get Channel by user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task<ErrorOr<Channel>> GetChannelByUser(Guid userId)
+    {
+        var user = await _usersService.GetUser(userId);
+        if (user.IsError)
+            return user.FirstError;
+        
+        var filter = Builders<Channel>.Filter.Eq("user", user.Value);
+        
+        var channel = await _channels.Find(filter).FirstOrDefaultAsync();
+        if (channel is null)
+            return Error.NotFound("Channel.Error", "Channel not found");
+
+        return channel;
+    }
+
+    /// <summary>
+    /// Delete channel
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     public async Task<IErrorOr> DeleteChannel(Guid id)
     {
-        throw new NotImplementedException();
+        var filter = Builders<Channel>.Filter.Eq("_id", id);
+        
+        await _channels.DeleteOneAsync(filter);
+
+        return ErrorOr.NoError();
     }
 
     /// <summary>
@@ -74,5 +153,33 @@ public class ChannelsService : IChannelsService
         await _channels.InsertOneAsync(channel);
 
         return channel;
+    }
+
+    /// <summary>
+    /// Patch Channel
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public async Task<ErrorOr<Channel>> PatchChannel(PatchChannelRequest request)
+    {
+        var filter = Builders<Channel>.Filter.Eq("_id", request.Id);
+
+        var category = await _categoriesService.GetCategory(request.CategoryId);
+        if (category.IsError)
+            return category.FirstError;
+
+        var update = Builders<Channel>.Update.Set("category", category.Value);
+        await UpdateField(filter, update);
+
+        var channel = await GetChannel(request.Id);
+        if (channel.IsError)
+            return channel.FirstError;
+
+        return channel.Value;
+    }
+    
+    private async Task UpdateField(FilterDefinition<Channel> filter, UpdateDefinition<Channel> update)
+    {
+        await _channels.UpdateOneAsync(filter, update);
     }
 }

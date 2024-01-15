@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Text;
-using AuthStreamingPlatformService.Infrastructure;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,7 +12,7 @@ using StreamingPlatformService.Infrastructure;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
-const string version = "v0.0.1";
+const string version = "v0.0.5";
 const string swaggerUrl = $"/swagger/{version}/swagger.json";
 const string swaggerName = "Streaming Platform";
 

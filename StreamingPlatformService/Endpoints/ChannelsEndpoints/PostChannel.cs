@@ -10,10 +10,17 @@ using StreamingPlatformService.Infrastructure.Endpoints;
 
 namespace StreamingPlatformService.Endpoints.ChannelsEndpoints;
 
+/// <summary>
+/// Post Channel endpoint
+/// </summary>
 public class PostChannel : EndpointBaseAsync.WithRequest<PostChannelRequest>.WithActionResult<PostChannelResponse>
 {
     private readonly IChannelsService _channelsService;
 
+    /// <summary>
+    /// Ctor for endpoint 
+    /// </summary>
+    /// <param name="channelsService"></param>
     public PostChannel(IChannelsService channelsService)
     {
         _channelsService = channelsService;

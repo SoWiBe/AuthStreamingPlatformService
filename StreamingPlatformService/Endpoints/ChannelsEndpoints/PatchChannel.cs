@@ -7,33 +7,27 @@ using StreamingPlatformService.Infrastructure.Endpoints;
 namespace StreamingPlatformService.Endpoints.ChannelsEndpoints;
 
 /// <summary>
-/// Get channels endpoint
+/// Patch Channel Endpoint
 /// </summary>
-public class GetChannels : EndpointBaseAsync.WithRequest<GetChannelsRequest>.WithActionResult<GetChannelsResponse>
+public class PatchChannel : EndpointBaseAsync.WithRequest<PatchChannelRequest>.WithActionResult<PatchChannelResponse>
 {
     private readonly IChannelsService _channelsService;
 
     /// <summary>
     /// Ctor for endpoint
     /// </summary>
-    /// <param name="channelsService"></param>
-    public GetChannels(IChannelsService channelsService)
+    public PatchChannel(IChannelsService channelsService)
     {
         _channelsService = channelsService;
     }
     
-    [HttpGet("/channel/channels")] 
+    [HttpPatch("/channel/patch-channel")]
     [ApiExplorerSettings(GroupName = "Channel")]
-    public override async Task<ActionResult<GetChannelsResponse>> HandleAsync([FromQuery] GetChannelsRequest request, 
+    public override async Task<ActionResult<PatchChannelResponse>> HandleAsync(PatchChannelRequest request,
         CancellationToken cancellationToken = default)
     {
-        var channels = await _channelsService.GetChannels(request.CategoryId);
+        var channel = await _channelsService.PatchChannel(request);
         
-        return channels.IsError ? 
-            GetActionResult(channels) :
-            Ok(new GetChannelsResponse
-            {
-                Channels = channels.Value
-            });
+        return channel.IsError ? GetActionResult(channel) : Ok(new PatchChannelResponse { Channel = channel.Value });
     }
 }

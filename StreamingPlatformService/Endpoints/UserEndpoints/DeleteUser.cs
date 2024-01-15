@@ -21,12 +21,12 @@ public class DeleteUser : EndpointBaseAsync.WithoutRequest.WithActionResult<Dele
     [ApiExplorerSettings(GroupName = "User")]
     public override async Task<ActionResult<DeleteUserResponse>> HandleAsync(CancellationToken cancellationToken = default)
     {
-        var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        var rawId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
-        if (string.IsNullOrEmpty(email))
+        if (string.IsNullOrEmpty(rawId))
             return BadRequest(Error.Custom(5, "User.BadRequest", "User not found"));
         
-        var result = await _usersService.DeleteUser(email);
+        var result = await _usersService.DeleteUser(new Guid(rawId));
         if (result.IsError)
             return GetActionResult(result);
 

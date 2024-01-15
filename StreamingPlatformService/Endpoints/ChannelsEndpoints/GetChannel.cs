@@ -7,33 +7,30 @@ using StreamingPlatformService.Infrastructure.Endpoints;
 namespace StreamingPlatformService.Endpoints.ChannelsEndpoints;
 
 /// <summary>
-/// Get channels endpoint
+/// Get Channel Endpoint
 /// </summary>
-public class GetChannels : EndpointBaseAsync.WithRequest<GetChannelsRequest>.WithActionResult<GetChannelsResponse>
+public class GetChannel : EndpointBaseAsync.WithRequest<GetChannelRequest>.WithActionResult<GetChannelResponse>
 {
     private readonly IChannelsService _channelsService;
 
     /// <summary>
-    /// Ctor for endpoint
+    /// Ctor for get channel
     /// </summary>
     /// <param name="channelsService"></param>
-    public GetChannels(IChannelsService channelsService)
+    public GetChannel(IChannelsService channelsService)
     {
         _channelsService = channelsService;
     }
     
-    [HttpGet("/channel/channels")] 
+    [HttpGet(GetChannelRequest.Route)]
     [ApiExplorerSettings(GroupName = "Channel")]
-    public override async Task<ActionResult<GetChannelsResponse>> HandleAsync([FromQuery] GetChannelsRequest request, 
+    public override async Task<ActionResult<GetChannelResponse>> HandleAsync([FromRoute]GetChannelRequest request, 
         CancellationToken cancellationToken = default)
     {
-        var channels = await _channelsService.GetChannels(request.CategoryId);
-        
-        return channels.IsError ? 
-            GetActionResult(channels) :
-            Ok(new GetChannelsResponse
-            {
-                Channels = channels.Value
-            });
+        var channel = await _channelsService.GetChannel(request.ChannelId);
+
+        return channel.IsError ? 
+            GetActionResult(channel) : 
+            Ok(new GetChannelResponse {Channel = channel.Value});
     }
 }

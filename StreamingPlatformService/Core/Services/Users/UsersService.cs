@@ -1,26 +1,28 @@
 ﻿using MongoDB.Driver;
 using StreamingPlatformService.Core.Abstractions.Errors;
-using StreamingPlatformService.Core.Abstractions.Services;
+using StreamingPlatformService.Core.Abstractions.Services.Channels;
 using StreamingPlatformService.Core.Abstractions.Services.Users;
 using StreamingPlatformService.Core.Errors;
 using StreamingPlatformService.Entities;
 using StreamingPlatformService.Entities.Requests;
 using StreamingPlatformService.Infrastructure.Data;
 
-namespace StreamingPlatformService.Core.Services;
+namespace StreamingPlatformService.Core.Services.Users;
 
 public class UsersService : IUsersService
 {
     private readonly IAppMongoDbContext _mongoDbContext;
+    private readonly IChannelsService _channelsService;
     private readonly IMongoCollection<User> _users;
 
     /// <summary>
     /// Ctor Users Service
     /// </summary>
     /// <param name="mongoDbContext"></param>
-    public UsersService(IAppMongoDbContext mongoDbContext)
+    public UsersService(IAppMongoDbContext mongoDbContext, IChannelsService channelsService)
     {
         _mongoDbContext = mongoDbContext;
+        _channelsService = channelsService;
         _users = _mongoDbContext.GetDatabase().GetCollection<User>("Users");
     }
 
@@ -146,9 +148,21 @@ public class UsersService : IUsersService
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    public async Task<IErrorOr> DeleteUser(string email)
+    public async Task<IErrorOr> DeleteUser(Guid id)
     {
-        var filter = Builders<User>.Filter.Eq("email", email);
+        var user = await GetUser(id);
+        if (user.IsError)
+            return ErrorOr.From(user.FirstError);
+
+        var channel = await _channelsService.GetChannelByUser(id);
+        if (!channel.IsError)
+        {
+            var deletedChannel = await _channelsService.DeleteChannel(channel.Value.Id);
+            if (deletedChannel.IsError)
+                return deletedChannel;
+        }
+        
+        var filter = Builders<User>.Filter.Eq("_id", id);
         
         await _users.DeleteOneAsync(filter);
 

@@ -8,9 +8,11 @@ namespace StreamingPlatformService.Core.Abstractions.Services.Channels;
 
 public interface IChannelsService
 {
-    Task<ErrorOr<IEnumerable<Channel>>> GetChannels();
+    Task<ErrorOr<IEnumerable<Channel>>> GetChannels(Guid? categoryId = null);
     Task<ErrorOr<Channel>> GetChannel(Guid id);
+    Task<ErrorOr<Channel>> GetChannelByCategory(Guid categoryId);
+    Task<ErrorOr<Channel>> GetChannelByUser(Guid userId);
     Task<IErrorOr> DeleteChannel(Guid id);
     Task<ErrorOr<Channel>> PostChannel(Guid userId, PostChannelRequest request);
-    // Task<ErrorOr<Category>> PatchCategory(PatchCategoryRequest request);
+    Task<ErrorOr<Channel>> PatchChannel(PatchChannelRequest request);
 }
