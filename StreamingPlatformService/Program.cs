@@ -15,7 +15,7 @@ using Swashbuckle.AspNetCore.Filters;
 var builder = WebApplication.CreateBuilder(args);
 const string version = "v0.0.1";
 const string swaggerUrl = $"/swagger/{version}/swagger.json";
-const string swaggerName = "Tech Daily";
+const string swaggerName = "Streaming Platform";
 
 builder.Services.AddMvc();
 builder.Services.AddControllers();
