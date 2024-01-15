@@ -1,4 +1,5 @@
-﻿using StreamingPlatformService.Core.Abstractions.Errors;
+﻿using MongoDB.Driver;
+using StreamingPlatformService.Core.Abstractions.Errors;
 using StreamingPlatformService.Core.Errors;
 using StreamingPlatformService.Entities;
 using StreamingPlatformService.Entities.Requests;
@@ -14,4 +15,5 @@ public interface IUsersService
     Task<ErrorOr<User>> PatchUser(string email, PatchUserRequest request);
     Task<IErrorOr> UpdatePassword(PatchPasswordRequest request);
     Task<IErrorOr> DeleteUser(Guid id);
+    Task UpdateField(FilterDefinition<User> filter, UpdateDefinition<User> update);
 }

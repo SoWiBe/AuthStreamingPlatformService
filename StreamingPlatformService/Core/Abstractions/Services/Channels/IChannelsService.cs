@@ -15,4 +15,6 @@ public interface IChannelsService
     Task<IErrorOr> DeleteChannel(Guid id);
     Task<ErrorOr<Channel>> PostChannel(Guid userId, PostChannelRequest request);
     Task<ErrorOr<Channel>> PatchChannel(PatchChannelRequest request);
+    Task<IErrorOr> Subscribe(Guid userId, Guid channelId);
+    Task<IErrorOr> UnSubscribe(Guid userId, Guid channelId);
 }

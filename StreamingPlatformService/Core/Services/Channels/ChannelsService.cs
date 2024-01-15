@@ -177,9 +177,92 @@ public class ChannelsService : IChannelsService
 
         return channel.Value;
     }
-    
+
+    /// <summary>
+    /// Subscribe to channel by user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="channelId"></param>
+    /// <returns></returns>
+    public async Task<IErrorOr> Subscribe(Guid userId, Guid channelId)
+    {
+        var channel = await GetChannel(channelId);
+        if (channel.IsError)
+            return ErrorOr.From(channel.FirstError);
+
+        var user = await _usersService.GetUser(userId);
+        if (user.IsError)
+            return ErrorOr.From(user.FirstError);
+
+        var updateSr = await UpdateSubscribers(user.Value, channel.Value);
+        if (updateSr.IsError)
+            return updateSr;
+        
+        var updateSs = await UpdateSubscribes(user.Value, channel.Value);
+        if (updateSs.IsError)
+            return updateSs;
+
+        return ErrorOr.NoError();
+    }
+
+    public async Task<IErrorOr> UnSubscribe(Guid userId, Guid channelId)
+    {
+        var channel = await GetChannel(channelId);
+        if (channel.IsError)
+            return ErrorOr.From(channel.FirstError);
+
+        var user = await _usersService.GetUser(userId);
+        if (user.IsError)
+            return ErrorOr.From(user.FirstError);
+        
+        return ErrorOr.NoError();
+    }
+
     private async Task UpdateField(FilterDefinition<Channel> filter, UpdateDefinition<Channel> update)
     {
         await _channels.UpdateOneAsync(filter, update);
     }
+
+    private async Task<IErrorOr> UpdateSubscribes(User user, Channel channel)
+    {
+        if (user.Id == channel.User.Id)
+            return ErrorOr.From(Error.Failure("User.Conflict", "User can't subscribe to himself"));
+
+        var subscribes = new List<Channel>();
+        if (user.Subscribes is not null)
+        {
+            subscribes = user.Subscribes.ToList();
+        }
+        
+        if (user.Subscribes != null && user.Subscribes.FirstOrDefault(x => x.Id == channel.Id) is not null)
+        {
+            return ErrorOr.From(Error.Failure("User.Conflict", "User already subscribe on this channel"));
+        }
+        
+        subscribes.Add(channel);
+        
+        var filterUser = Builders<User>.Filter.Eq("_id", user.Id);
+        var updateUser = Builders<User>.Update.Set("subscribes", subscribes);
+        await _usersService.UpdateField(filterUser, updateUser);
+        
+        return ErrorOr.NoError();
+    }
+    
+    private async Task<IErrorOr> UpdateSubscribers(User user, Channel channel)
+    {
+        var subscribers = new List<User>();
+        if (channel.Subscribers is not null)
+        {
+            subscribers = channel.Subscribers.ToList();
+        }
+        
+        subscribers.Add(user);
+        
+        var filterChannel = Builders<Channel>.Filter.Eq("_id", channel.Id);
+        var updateChannel = Builders<Channel>.Update.Set("subscribers", subscribers);
+        await UpdateField(filterChannel, updateChannel);
+        
+        return ErrorOr.NoError();
+    }
+    
 }

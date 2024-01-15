@@ -32,6 +32,10 @@ public class User : IEntityBase<Guid>
     public string Password { get; set; }
     
     [Required]
+    [BsonElement("subscribes")]
+    public IEnumerable<Channel>? Subscribes { get; set; }
+
+    [Required]
     [BsonElement("logo")]
     public int Logo { get; set; }
 }

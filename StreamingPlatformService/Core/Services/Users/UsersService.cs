@@ -12,14 +12,14 @@ namespace StreamingPlatformService.Core.Services.Users;
 public class UsersService : IUsersService
 {
     private readonly IAppMongoDbContext _mongoDbContext;
-    private readonly IChannelsService _channelsService;
+    private readonly Lazy<IChannelsService> _channelsService;
     private readonly IMongoCollection<User> _users;
 
     /// <summary>
     /// Ctor Users Service
     /// </summary>
     /// <param name="mongoDbContext"></param>
-    public UsersService(IAppMongoDbContext mongoDbContext, IChannelsService channelsService)
+    public UsersService(IAppMongoDbContext mongoDbContext, Lazy<IChannelsService> channelsService)
     {
         _mongoDbContext = mongoDbContext;
         _channelsService = channelsService;
@@ -154,10 +154,10 @@ public class UsersService : IUsersService
         if (user.IsError)
             return ErrorOr.From(user.FirstError);
 
-        var channel = await _channelsService.GetChannelByUser(id);
+        var channel = await _channelsService.Value.GetChannelByUser(user.Value.Id);
         if (!channel.IsError)
         {
-            var deletedChannel = await _channelsService.DeleteChannel(channel.Value.Id);
+            var deletedChannel = await _channelsService.Value.DeleteChannel(channel.Value.Id);
             if (deletedChannel.IsError)
                 return deletedChannel;
         }
@@ -169,7 +169,7 @@ public class UsersService : IUsersService
         return ErrorOr.NoError();
     }
 
-    private async Task UpdateField(FilterDefinition<User> filter, UpdateDefinition<User> update)
+    public async Task UpdateField(FilterDefinition<User> filter, UpdateDefinition<User> update)
     {
         await _users.UpdateOneAsync(filter, update);
     }
