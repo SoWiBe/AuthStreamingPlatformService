@@ -205,17 +205,14 @@ public class ChannelsService : IChannelsService
         return ErrorOr.NoError();
     }
 
-    public async Task<IErrorOr> UnSubscribe(Guid userId, Guid channelId)
+    public async Task<ErrorOr<IEnumerable<User>>> GetSubscribers(Guid channelId)
     {
         var channel = await GetChannel(channelId);
         if (channel.IsError)
-            return ErrorOr.From(channel.FirstError);
+            return channel.Errors.First();
 
-        var user = await _usersService.GetUser(userId);
-        if (user.IsError)
-            return ErrorOr.From(user.FirstError);
-        
-        return ErrorOr.NoError();
+        var subscribers = channel.Value.Subscribers;
+        return ErrorOr.From(subscribers);
     }
 
     private async Task UpdateField(FilterDefinition<Channel> filter, UpdateDefinition<Channel> update)
@@ -227,19 +224,18 @@ public class ChannelsService : IChannelsService
     {
         if (user.Id == channel.User.Id)
             return ErrorOr.From(Error.Failure("User.Conflict", "User can't subscribe to himself"));
+        
+        var subscribes = user.Subscribes.ToList();
 
-        var subscribes = new List<Channel>();
-        if (user.Subscribes is not null)
+        var channelForRemove = user.Subscribes.FirstOrDefault(x => x.Id == channel.Id);
+        if (channelForRemove is not null)
         {
-            subscribes = user.Subscribes.ToList();
+            subscribes.Remove(channelForRemove);
         }
-        
-        if (user.Subscribes != null && user.Subscribes.FirstOrDefault(x => x.Id == channel.Id) is not null)
+        else
         {
-            return ErrorOr.From(Error.Failure("User.Conflict", "User already subscribe on this channel"));
+            subscribes.Add(channel);
         }
-        
-        subscribes.Add(channel);
         
         var filterUser = Builders<User>.Filter.Eq("_id", user.Id);
         var updateUser = Builders<User>.Update.Set("subscribes", subscribes);
@@ -247,20 +243,26 @@ public class ChannelsService : IChannelsService
         
         return ErrorOr.NoError();
     }
-    
     private async Task<IErrorOr> UpdateSubscribers(User user, Channel channel)
     {
-        var subscribers = new List<User>();
-        if (channel.Subscribers is not null)
+        var subscribers = channel.Subscribers.ToList();
+
+        var userForRemove = subscribers.FirstOrDefault(x => x.Id == user.Id);
+        if (userForRemove is not null)
         {
-            subscribers = channel.Subscribers.ToList();
+            subscribers.Remove(userForRemove);
         }
-        
-        subscribers.Add(user);
-        
+        else
+        {
+            subscribers.Add(user);
+        }
+
         var filterChannel = Builders<Channel>.Filter.Eq("_id", channel.Id);
         var updateChannel = Builders<Channel>.Update.Set("subscribers", subscribers);
         await UpdateField(filterChannel, updateChannel);
+        
+        var updateCountChannel = Builders<Channel>.Update.Set("subscribers_count", subscribers.Count);
+        await UpdateField(filterChannel, updateCountChannel);
         
         return ErrorOr.NoError();
     }

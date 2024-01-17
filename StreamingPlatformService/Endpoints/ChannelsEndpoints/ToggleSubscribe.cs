@@ -10,7 +10,7 @@ namespace StreamingPlatformService.Endpoints.ChannelsEndpoints;
 /// <summary>
 /// Subscribe endpoint
 /// </summary>
-public class Subscribe : EndpointBaseAsync.WithRequest<SubscribeRequest>.WithActionResult<SubscribeResponse>
+public class ToggleSubscribe : EndpointBaseAsync.WithRequest<SubscribeRequest>.WithActionResult<SubscribeResponse>
 {
     private readonly IChannelsService _channelsService;
 
@@ -18,7 +18,7 @@ public class Subscribe : EndpointBaseAsync.WithRequest<SubscribeRequest>.WithAct
     /// Ctor for endpoint
     /// </summary>
     /// <param name="channelsService"></param>
-    public Subscribe(IChannelsService channelsService)
+    public ToggleSubscribe(IChannelsService channelsService)
     {
         _channelsService = channelsService;
     }

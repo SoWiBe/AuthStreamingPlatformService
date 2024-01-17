@@ -17,7 +17,7 @@ public class Channel : IEntityBase<Guid>
     
     [Required]
     [BsonElement("subscribers")]
-    public IEnumerable<User>? Subscribers { get; set; }
+    public IEnumerable<User> Subscribers { get; set; }
 
     [Required]
     [BsonElement("subscribers_count")]

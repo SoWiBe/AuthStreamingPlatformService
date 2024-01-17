@@ -33,7 +33,7 @@ public class User : IEntityBase<Guid>
     
     [Required]
     [BsonElement("subscribes")]
-    public IEnumerable<Channel>? Subscribes { get; set; }
+    public IEnumerable<Channel> Subscribes { get; set; }
 
     [Required]
     [BsonElement("logo")]
